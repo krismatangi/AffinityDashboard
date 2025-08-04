@@ -98,7 +98,12 @@ class SystemConfig:
             'ultrasound_radcon5_threshold': 12,
             'ultrasound_radcon3_threshold': 30,
             'ultrasound_radcon1_threshold': 60,
-            'ultrasound_processing_rate': 25
+            'ultrasound_processing_rate': 25,
+            
+            # Overall Radcon Thresholds (Weighted Score)
+            'radcon_4_threshold': 50,
+            'radcon_3_threshold': 100,
+            'radcon_2_threshold': 150
         }
     
     @staticmethod
