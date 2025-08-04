@@ -80,13 +80,13 @@ class AffinityDashboard {
             console.error('Error loading configuration:', error);
             // Use default configuration if API fails
             this.config = {
-                mri_yellow: 10, mri_orange: 25, mri_red: 50,
-                ct_yellow: 15, ct_orange: 35, ct_red: 70,
-                xray_yellow: 25, xray_orange: 60, xray_red: 120,
-                nucmed_yellow: 8, nucmed_orange: 20, nucmed_red: 40,
-                ultrasound_yellow: 15, ultrasound_orange: 40, ultrasound_red: 80,
-                mri_rate: 8, ct_rate: 12, xray_rate: 20, nucmed_rate: 6, ultrasound_rate: 10,
-                radcon_4_threshold: 30, radcon_3_threshold: 60, radcon_2_threshold: 100
+                mri_radcon5_threshold: 40, mri_radcon3_threshold: 60, mri_radcon1_threshold: 90,
+                ct_radcon5_threshold: 20, ct_radcon3_threshold: 35, ct_radcon1_threshold: 45,
+                xray_radcon5_threshold: 20, xray_radcon3_threshold: 40, xray_radcon1_threshold: 55,
+                nucmed_radcon5_threshold: 10, nucmed_radcon3_threshold: 15, nucmed_radcon1_threshold: 20,
+                ultrasound_radcon5_threshold: 30, ultrasound_radcon3_threshold: 50, ultrasound_radcon1_threshold: 60,
+                mri_processing_rate: 16, ct_processing_rate: 20, xray_processing_rate: 40, nucmed_processing_rate: 5, ultrasound_processing_rate: 40,
+                radcon_4_threshold: 110, radcon_3_threshold: 175, radcon_2_threshold: 206
             };
         }
     }
@@ -144,22 +144,22 @@ class AffinityDashboard {
         
         let thresholds;
         
-        // Use dynamic thresholds from configuration
+        // Use dynamic thresholds from configuration (Radcon 5 = yellow, 3 = orange, 1 = red)
         switch(type) {
             case 'mri':
-                thresholds = { yellow: this.config.mri_yellow, orange: this.config.mri_orange, red: this.config.mri_red };
+                thresholds = { yellow: this.config.mri_radcon5_threshold, orange: this.config.mri_radcon3_threshold, red: this.config.mri_radcon1_threshold };
                 break;
             case 'ct':
-                thresholds = { yellow: this.config.ct_yellow, orange: this.config.ct_orange, red: this.config.ct_red };
+                thresholds = { yellow: this.config.ct_radcon5_threshold, orange: this.config.ct_radcon3_threshold, red: this.config.ct_radcon1_threshold };
                 break;
             case 'xray':
-                thresholds = { yellow: this.config.xray_yellow, orange: this.config.xray_orange, red: this.config.xray_red };
+                thresholds = { yellow: this.config.xray_radcon5_threshold, orange: this.config.xray_radcon3_threshold, red: this.config.xray_radcon1_threshold };
                 break;
             case 'nucmed':
-                thresholds = { yellow: this.config.nucmed_yellow, orange: this.config.nucmed_orange, red: this.config.nucmed_red };
+                thresholds = { yellow: this.config.nucmed_radcon5_threshold, orange: this.config.nucmed_radcon3_threshold, red: this.config.nucmed_radcon1_threshold };
                 break;
             case 'ultrasound':
-                thresholds = { yellow: this.config.ultrasound_yellow, orange: this.config.ultrasound_orange, red: this.config.ultrasound_red };
+                thresholds = { yellow: this.config.ultrasound_radcon5_threshold, orange: this.config.ultrasound_radcon3_threshold, red: this.config.ultrasound_radcon1_threshold };
                 break;
             default:
                 thresholds = { yellow: 15, orange: 35, red: 70 };
@@ -181,11 +181,11 @@ class AffinityDashboard {
         
         // Use dynamic processing rates from configuration
         const processingRates = {
-            mri: this.config.mri_rate,
-            ct: this.config.ct_rate,
-            xray: this.config.xray_rate,
-            nucmed: this.config.nucmed_rate,
-            ultrasound: this.config.ultrasound_rate
+            mri: this.config.mri_processing_rate,
+            ct: this.config.ct_processing_rate,
+            xray: this.config.xray_processing_rate,
+            nucmed: this.config.nucmed_processing_rate,
+            ultrasound: this.config.ultrasound_processing_rate
         };
 
         if (cases === 0) return 0;
