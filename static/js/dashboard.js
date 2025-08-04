@@ -104,6 +104,9 @@ class AffinityDashboard {
                 ultrasound: data.ultrasound || 0
             };
             
+            // Store radiologist staffing level
+            this.radiologistStaffing = data.radiologist_staffing || 100;
+            
             this.updateLastUpdatedTime(data.updated_at, data.updated_by);
             this.updateDashboard();
             
@@ -116,6 +119,7 @@ class AffinityDashboard {
     setupAutoRefresh() {
         // Refresh data every 30 seconds
         setInterval(() => {
+            this.loadConfiguration(); // Reload config in case it changed
             this.loadCaseData();
         }, 30000);
     }
@@ -190,7 +194,11 @@ class AffinityDashboard {
 
         if (cases === 0) return 0;
         
-        return Math.ceil(cases / processingRates[type]);
+        // Apply radiologist staffing level (percentage) to processing rate
+        const staffingMultiplier = (this.radiologistStaffing || 100) / 100;
+        const effectiveProcessingRate = processingRates[type] * staffingMultiplier;
+        
+        return Math.ceil(cases / effectiveProcessingRate);
     }
 
     calculateOverallStatus(cases) {
