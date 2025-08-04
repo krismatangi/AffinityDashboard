@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Affinity Medical Imaging</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS with Replit dark theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <meta name="theme-color" content="#EEB927">
+</head>
+<body data-bs-theme="dark">
+    <div class="container-fluid">
+        <!-- Header -->
+        <header class="row">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                    <div class="text-center flex-grow-1">
+                        <h1 class="display-6 mb-1">
+                            <span class="medical-title">AFFINITY</span>
+                            <span class="text-light">ADMIN PANEL</span>
+                        </h1>
+                        <h2 class="h6 brand-accent">CASE VOLUME MANAGEMENT</h2>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="{{ url_for('admin_config') }}" class="btn btn-outline-info btn-sm">
+                            <i class="fas fa-cogs me-1"></i>
+                            Config
+                        </a>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-chart-line me-1"></i>
+                            Dashboard
+                        </a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-outline-warning btn-sm">
+                            <i class="fas fa-sign-out-alt me-1"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                            <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Current Status Overview -->
+        {% if current_volumes %}
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Current Status
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-2">
+                                    <h5 class="text-light">{{ current_volumes.mri if current_volumes.mri is defined else 0 }}</h5>
+                                    <small class="text-light">MRI Cases</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5 class="text-light">{{ current_volumes.ct if current_volumes.ct is defined else 0 }}</h5>
+                                    <small class="text-light">CT Cases</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5 class="text-light">{{ current_volumes.xray if current_volumes.xray is defined else 0 }}</h5>
+                                    <small class="text-light">X-ray Cases</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5 class="text-light">{{ current_volumes.nucmed if current_volumes.nucmed is defined else 0 }}</h5>
+                                    <small class="text-light">Nuc Med Cases</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5 class="text-light">{{ current_volumes.ultrasound if current_volumes.ultrasound is defined else 0 }}</h5>
+                                    <small class="text-light">Ultrasound Cases</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <h5 class="text-warning">{{ (current_volumes.mri|default(0) + current_volumes.ct|default(0) + current_volumes.xray|default(0) + current_volumes.nucmed|default(0) + current_volumes.ultrasound|default(0)) }}</h5>
+                                    <small class="text-light">Total Cases</small>
+                                </div>
+                            </div>
+                            {% if current_volumes.updated_by %}
+                            <div class="mt-3 text-center">
+                                <small class="text-light">
+                                    Last updated by <strong class="text-warning">{{ current_volumes.updated_by }}</strong>
+                                    {% if current_volumes.updated_at %}
+                                        on {{ current_volumes.updated_at.strftime('%Y-%m-%d at %H:%M') }}
+                                    {% endif %}
+                                </small>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Update Form -->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h4 class="card-title mb-0">
+                                <i class="fas fa-edit me-2"></i>
+                                Update Case Volumes
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{{ url_for('update_volumes') }}" class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="admin_name" class="form-label text-light">
+                                        <i class="fas fa-user me-1"></i>
+                                        Admin Name
+                                    </label>
+                                    <input type="text" class="form-control" id="admin_name" name="admin_name" 
+                                           placeholder="Enter your name" required maxlength="100">
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Spacer -->
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="mri" class="form-label text-light">
+                                        <i class="fas fa-brain me-1"></i>
+                                        MRI Cases
+                                    </label>
+                                    <input type="number" class="form-control" id="mri" name="mri" 
+                                           min="0" max="9999" value="{{ current_volumes.mri if current_volumes else 0 }}" 
+                                           placeholder="Enter MRI cases">
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="ct" class="form-label text-light">
+                                        <i class="fas fa-lungs me-1"></i>
+                                        CT Cases
+                                    </label>
+                                    <input type="number" class="form-control" id="ct" name="ct" 
+                                           min="0" max="9999" value="{{ current_volumes.ct if current_volumes else 0 }}" 
+                                           placeholder="Enter CT cases">
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="xray" class="form-label text-light">
+                                        <i class="fas fa-x-ray me-1"></i>
+                                        X-ray Cases
+                                    </label>
+                                    <input type="number" class="form-control" id="xray" name="xray" 
+                                           min="0" max="9999" value="{{ current_volumes.xray if current_volumes else 0 }}" 
+                                           placeholder="Enter X-ray cases">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="nucmed" class="form-label text-light">
+                                        <i class="fas fa-radiation me-1"></i>
+                                        Nuclear Medicine Cases
+                                    </label>
+                                    <input type="number" class="form-control" id="nucmed" name="nucmed" 
+                                           min="0" max="9999" value="{{ current_volumes.nucmed if current_volumes else 0 }}" 
+                                           placeholder="Enter Nuclear Medicine cases">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="ultrasound" class="form-label text-light">
+                                        <i class="fas fa-heart me-1"></i>
+                                        Ultrasound Cases
+                                    </label>
+                                    <input type="number" class="form-control" id="ultrasound" name="ultrasound" 
+                                           min="0" max="9999" value="{{ current_volumes.ultrasound if current_volumes else 0 }}" 
+                                           placeholder="Enter Ultrasound cases">
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="radiologist_staffing" class="form-label text-light">
+                                        <i class="fas fa-user-md me-1"></i>
+                                        Radiologist Staffing Level
+                                    </label>
+                                    <select class="form-control" id="radiologist_staffing" name="radiologist_staffing" required>
+                                        <option value="20" {{ 'selected' if current_volumes and current_volumes.radiologist_staffing == 20 else '' }}>20% - Critical Shortage</option>
+                                        <option value="40" {{ 'selected' if current_volumes and current_volumes.radiologist_staffing == 40 else '' }}>40% - Severe Shortage</option>
+                                        <option value="60" {{ 'selected' if current_volumes and current_volumes.radiologist_staffing == 60 else '' }}>60% - Reduced Staffing</option>
+                                        <option value="80" {{ 'selected' if current_volumes and current_volumes.radiologist_staffing == 80 else '' }}>80% - Limited Staffing</option>
+                                        <option value="100" {{ 'selected' if not current_volumes or current_volumes.radiologist_staffing == 100 else '' }}>100% - Full Staffing</option>
+                                        <option value="120" {{ 'selected' if current_volumes and current_volumes.radiologist_staffing == 120 else '' }}>120% - Extra Coverage</option>
+                                    </select>
+                                    <small class="text-light">Current radiologist availability as percentage of normal capacity</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Spacer for layout -->
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                            <i class="fas fa-undo me-1"></i>
+                                            Reset
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-1"></i>
+                                            Update Case Volumes
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="container mt-4 mb-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Instructions
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="text-light">Radcon Levels</h6>
+                                    <ul class="list-unstyled">
+                                        <li class="text-light"><span class="badge bg-success me-2">Radcon 5</span>Very Low Demand</li>
+                                        <li class="text-light"><span class="badge bg-info me-2">Radcon 4</span>Low Demand</li>
+                                        <li class="text-light"><span class="badge bg-warning me-2">Radcon 3</span>Average Demand</li>
+                                        <li class="text-light"><span class="badge bg-warning me-2">Radcon 2</span>Above Average Demand</li>
+                                        <li class="text-light"><span class="badge bg-danger me-2">Radcon 1</span>High Demand</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-light">Usage Guidelines</h6>
+                                    <ul class="small text-light">
+                                        <li>Enter the current number of unreported cases for each modality</li>
+                                        <li>The dashboard will automatically calculate Radcon levels and reporting turnaround</li>
+                                        <li>Always enter your admin name for audit trail</li>
+                                        <li>Updates are immediately reflected on the main dashboard</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Form validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            const inputs = form.querySelectorAll('input[type="number"]');
+            
+            // Real-time validation
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    if (value < 0) this.value = 0;
+                    if (value > 9999) this.value = 9999;
+                });
+            });
+            
+            // Form submission feedback
+            form.addEventListener('submit', function() {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Updating...';
+                submitBtn.disabled = true;
+            });
+        });
+    </script>
+</body>
+</html>

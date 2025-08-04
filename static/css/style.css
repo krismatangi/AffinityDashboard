@@ -1,0 +1,635 @@
+/* Affinity Reporting Status Dashboard - Brand Aligned Styles */
+:root {
+    /* Affinity Brand Colors */
+    --affinity-navy: #2E334E;
+    --affinity-yellow: #EEB927;
+    --affinity-white: #ffffff;
+    --affinity-black: #000000;
+    
+    /* Enhanced color palette based on brand */
+    --primary-bg: linear-gradient(135deg, #1a1f2e 0%, #2E334E 100%);
+    --card-bg: rgba(255, 255, 255, 0.98);
+    --card-bg-dark: rgba(46, 51, 78, 0.95);
+    --card-border: rgba(46, 51, 78, 0.2);
+    --accent-primary: #EEB927;
+    --accent-secondary: #d4a322;
+    --text-primary: #2E334E;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-light: #ffffff;
+    --shadow-lg: 0 20px 40px rgba(46, 51, 78, 0.15);
+    --shadow-xl: 0 25px 50px rgba(46, 51, 78, 0.25);
+    --glow-primary: 0 0 30px rgba(238, 185, 39, 0.4);
+    --glow-secondary: 0 0 20px rgba(212, 163, 34, 0.3);
+    
+    /* Medical status colors aligned with brand */
+    --radcon-5: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    --radcon-4: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --radcon-3: linear-gradient(135deg, #EEB927 0%, #d4a322 100%);
+    --radcon-2: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    --radcon-1: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+body {
+    background: var(--primary-bg);
+    font-family: 'Avenir Next LT Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    color: var(--text-light);
+}
+
+/* Global text visibility fixes for dark background */
+body * {
+    color: var(--text-light);
+}
+
+/* Force ALL admin and config page text to be white */
+body[data-bs-theme="dark"] .card-body,
+body[data-bs-theme="dark"] .card-body *,
+body[data-bs-theme="dark"] .form-label,
+body[data-bs-theme="dark"] .form-control::placeholder,
+body[data-bs-theme="dark"] h1, 
+body[data-bs-theme="dark"] h2, 
+body[data-bs-theme="dark"] h3, 
+body[data-bs-theme="dark"] h4, 
+body[data-bs-theme="dark"] h5, 
+body[data-bs-theme="dark"] h6,
+body[data-bs-theme="dark"] p, 
+body[data-bs-theme="dark"] span, 
+body[data-bs-theme="dark"] small, 
+body[data-bs-theme="dark"] div,
+body[data-bs-theme="dark"] label,
+body[data-bs-theme="dark"] .text-muted {
+    color: var(--text-light) !important;
+}
+
+/* Specifically target admin panel elements */
+.admin-panel .card-body, 
+.admin-panel .card-body *,
+.admin-panel .form-label,
+.admin-panel .form-control,
+.admin-panel h1, .admin-panel h2, .admin-panel h3, .admin-panel h4, .admin-panel h5, .admin-panel h6,
+.admin-panel p, .admin-panel span, .admin-panel small, .admin-panel div {
+    color: var(--text-light) !important;
+}
+
+/* Regular dashboard cards keep dark text */
+.dashboard-card .card-body, 
+.dashboard-card .card-body * {
+    color: var(--text-primary);
+}
+
+/* Ensure status indicators are visible */
+.status-indicator, .status-indicator * {
+    color: var(--text-light) !important;
+}
+
+/* Force visibility for summary stats */
+#totalCases, #avgTurnaround, #workload {
+    color: var(--text-light) !important;
+}
+
+/* Dashboard case displays */
+#displayMriCases, #displayCtCases, #displayXrayCases, #displayNucmedCases {
+    color: var(--text-light) !important;
+}
+
+/* Simplified modality breakdown section */
+.card-body .border {
+    background: var(--affinity-navy) !important;
+    border: 2px solid var(--accent-primary) !important;
+    color: white !important;
+}
+
+.card-body .border h5, 
+.card-body .border i,
+.card-body .border span,
+.card-body .border small,
+.card-body .border * {
+    color: white !important;
+}
+
+.card-body .badge {
+    background-color: var(--accent-primary) !important;
+    color: var(--affinity-navy) !important;
+    font-weight: 600 !important;
+}
+
+.card-body .status-dot {
+    border: 2px solid white !important;
+}
+
+/* Radcon status text */
+.bg-radcon-1, .bg-radcon-2, .bg-radcon-3, .bg-radcon-4, .bg-radcon-5 {
+    color: white !important;
+}
+
+.bg-radcon-1 *, .bg-radcon-2 *, .bg-radcon-3 *, .bg-radcon-4 *, .bg-radcon-5 * {
+    color: white !important;
+}
+
+/* Brand-aligned Card Styling */
+.card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent-primary);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--affinity-navy) 0%, #3d4463 100%);
+    border-bottom: 2px solid var(--accent-primary);
+    padding: 1.5rem;
+    color: var(--text-light);
+}
+
+.card-body {
+    padding: 2rem;
+    color: var(--text-primary);
+}
+
+/* Header styling with Affinity branding */
+.navbar-brand, .card-title {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.display-4 {
+    font-weight: 800;
+    color: var(--text-light);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Status Indicators with Enhanced Animations */
+.status-indicator {
+    position: relative;
+    margin: 1rem 0;
+}
+
+.status-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-lg);
+}
+
+.status-circle::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.status-circle:hover::before {
+    opacity: 1;
+}
+
+.status-circle.pulse {
+    animation: statusPulse 3s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: var(--shadow-lg);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-xl), var(--glow-primary);
+    }
+}
+
+/* Radcon Level Styling */
+.bg-radcon-5 {
+    background: var(--radcon-5);
+    color: white;
+}
+
+.bg-radcon-4 {
+    background: var(--radcon-4);
+    color: white;
+}
+
+.bg-radcon-3 {
+    background: var(--radcon-3);
+    color: white;
+}
+
+.bg-radcon-2 {
+    background: var(--radcon-2);
+    color: white;
+}
+
+.bg-radcon-1 {
+    background: var(--radcon-1);
+    color: white;
+}
+
+/* Affinity Brand Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+.card-header h1, .card-header h2, .card-header h3, .card-header h4, .card-header h5, .card-header h6 {
+    color: var(--text-light);
+}
+
+.card-body h1, .card-body h2, .card-body h3, .card-body h4, .card-body h5, .card-body h6 {
+    color: var(--text-primary);
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Brand accent elements */
+.brand-accent {
+    color: var(--accent-primary);
+    font-weight: 600;
+}
+
+.medical-title {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+/* Affinity Brand Buttons */
+.btn {
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+}
+
+.btn-outline-warning {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    background: transparent;
+}
+
+.btn-outline-warning:hover {
+    background: var(--accent-primary);
+    color: var(--affinity-navy);
+    transform: translateY(-1px);
+    box-shadow: var(--glow-primary);
+    border-color: var(--accent-primary);
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: var(--affinity-navy);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover {
+    background: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+    color: var(--affinity-navy);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-xl), var(--glow-primary);
+}
+
+.btn-secondary {
+    background: var(--affinity-navy);
+    border-color: var(--affinity-navy);
+    color: var(--text-light);
+}
+
+.btn-secondary:hover {
+    background: #3d4463;
+    border-color: #3d4463;
+    color: var(--text-light);
+    transform: translateY(-1px);
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.loading {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .status-circle {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+}
+
+/* Modality Cards */
+.modality-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
+    color: var(--text-light);
+}
+
+.modality-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.modality-card i {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.modality-card h4, .modality-card h6 {
+    color: var(--text-light);
+}
+
+.modality-card small {
+    color: var(--text-secondary);
+}
+
+/* Medical Imaging Professional Layout */
+.medical-dashboard {
+    background: var(--primary-bg);
+    min-height: 100vh;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.status-card {
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent-primary);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.status-card:hover::before {
+    transform: scaleX(1);
+}
+
+.status-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--accent-primary);
+}
+
+/* Professional Medical Typography */
+.medical-heading {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+}
+
+.medical-subheading {
+    font-weight: 600;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+/* Enhanced Radcon Status Display */
+.radcon-display {
+    background: var(--card-bg-dark);
+    border: 2px solid var(--accent-primary);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+.radcon-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+}
+
+.radcon-display h3, .radcon-display h4, .radcon-display h5, .radcon-display h6 {
+    color: var(--text-light);
+}
+
+.radcon-display .text-muted {
+    color: var(--text-secondary) !important;
+}
+
+/* Affinity Logo Styling */
+.affinity-logo {
+    height: 100px;
+    width: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 768px) {
+    .affinity-logo {
+        height: 70px;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--primary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-secondary);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--bs-success);
+    transition: background-color 0.3s ease;
+}
+
+.status-dot.yellow {
+    background-color: var(--bs-warning);
+}
+
+.status-dot.orange {
+    background-color: #fd7e14;
+}
+
+.status-dot.red {
+    background-color: var(--bs-danger);
+}
+
+/* Input validation feedback */
+.form-control:invalid {
+    border-color: var(--bs-danger);
+}
+
+.form-control:valid {
+    border-color: var(--bs-success);
+}
+
+/* Enhanced card shadows for depth */
+.card {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .status-circle {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    h1.h3 {
+        font-size: 1.3rem;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Radcon-specific colors (inverse system: 5=normal, 1=critical) */
+.bg-radcon-5 {
+    background-color: var(--bs-success) !important;
+}
+
+.bg-radcon-4 {
+    background-color: var(--bs-info) !important;
+}
+
+.bg-radcon-3 {
+    background-color: var(--bs-warning) !important;
+}
+
+.bg-radcon-2 {
+    background-color: #fd7e14 !important;
+}
+
+.bg-radcon-1 {
+    background-color: var(--bs-danger) !important;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Loading state for inputs */
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Accessibility improvements */
+.status-indicator:focus-within {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .card {
+        border: 1px solid #000 !important;
+        background: white !important;
+        color: black !important;
+    }
+    
+    .status-circle {
+        border: 2px solid #000;
+    }
+}
