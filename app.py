@@ -26,9 +26,9 @@ database_url = os.environ.get("DATABASE_URL")
 if database_url:
     # Convert to use the psycopg2 driver which is installed
     if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
+        database_url = database_url.replace("postgres://", "postgresql+psycopg2://", 1)
     elif database_url.startswith("postgresql://"):
-        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+        database_url = database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -152,7 +152,12 @@ def update_config():
             'ultrasound_radcon5_threshold': int(request.form.get('ultrasound_radcon5_threshold', 12)),
             'ultrasound_radcon3_threshold': int(request.form.get('ultrasound_radcon3_threshold', 30)),
             'ultrasound_radcon1_threshold': int(request.form.get('ultrasound_radcon1_threshold', 60)),
-            'ultrasound_processing_rate': int(request.form.get('ultrasound_processing_rate', 25))
+            'ultrasound_processing_rate': int(request.form.get('ultrasound_processing_rate', 25)),
+            
+            # Overall Radcon Thresholds (Weighted Score)
+            'radcon_4_threshold': int(request.form.get('radcon_4_threshold', 50)),
+            'radcon_3_threshold': int(request.form.get('radcon_3_threshold', 100)),
+            'radcon_2_threshold': int(request.form.get('radcon_2_threshold', 150))
         }
         
         admin_name = session.get('admin_username', 'Admin')
