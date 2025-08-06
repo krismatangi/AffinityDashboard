@@ -107,7 +107,7 @@ class AffinityDashboard {
             // Store radiologist staffing level
             this.radiologistStaffing = data.radiologist_staffing || 100;
             
-            this.updateLastUpdatedTime(data.updated_at, data.updated_by);
+            this.updateLastUpdatedTime(data.timestamp, data.updated_by);
             this.updateDashboard();
             
         } catch (error) {
@@ -117,11 +117,11 @@ class AffinityDashboard {
     }
 
     setupAutoRefresh() {
-        // Refresh data every 30 seconds
+        // Refresh data every 5 seconds for faster updates
         setInterval(() => {
             this.loadConfiguration(); // Reload config in case it changed
             this.loadCaseData();
-        }, 30000);
+        }, 5000);
     }
 
     updateLastUpdatedTime(timestamp, updatedBy) {
