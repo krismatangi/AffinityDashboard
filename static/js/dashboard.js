@@ -126,18 +126,29 @@ class AffinityDashboard {
 
     updateLastUpdatedTime(timestamp, updatedBy) {
         if (timestamp && updatedBy) {
-            const date = new Date(timestamp);
-            // Convert to NZST timezone with proper 12-hour format
-            const timeStr = date.toLocaleString('en-NZ', {
-                timeZone: 'Pacific/Auckland',
-                year: 'numeric',
-                month: '2-digit', 
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
+            // Parse the UTC timestamp
+            const utcDate = new Date(timestamp + 'Z'); // Ensure it's treated as UTC
+            
+            // Add 12 hours for NZST (or 13 for NZDT during daylight saving)
+            // For now using NZST (UTC+12) as requested
+            const nzDate = new Date(utcDate.getTime() + (12 * 60 * 60 * 1000));
+            
+            // Format the date manually for consistent display
+            const day = String(nzDate.getUTCDate()).padStart(2, '0');
+            const month = String(nzDate.getUTCMonth() + 1).padStart(2, '0');
+            const year = nzDate.getUTCFullYear();
+            
+            let hours = nzDate.getUTCHours();
+            const minutes = String(nzDate.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(nzDate.getUTCSeconds()).padStart(2, '0');
+            
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // 0 should be 12
+            hours = String(hours).padStart(2, '0');
+            
+            const timeStr = `${day}/${month}/${year}, ${hours}:${minutes}:${seconds} ${ampm}`;
+            
             this.lastUpdated.textContent = `Last updated: ${timeStr} NZST by ${updatedBy}`;
         } else {
             this.lastUpdated.textContent = 'Last updated: No data available';
