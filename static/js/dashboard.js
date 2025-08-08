@@ -127,7 +127,7 @@ class AffinityDashboard {
     updateLastUpdatedTime(timestamp, updatedBy) {
         if (timestamp && updatedBy) {
             const date = new Date(timestamp);
-            // Convert to NZST timezone
+            // Convert to NZST timezone with proper 12-hour format
             const timeStr = date.toLocaleString('en-NZ', {
                 timeZone: 'Pacific/Auckland',
                 year: 'numeric',
@@ -135,7 +135,8 @@ class AffinityDashboard {
                 day: '2-digit',
                 hour: '2-digit',
                 minute: '2-digit',
-                second: '2-digit'
+                second: '2-digit',
+                hour12: true
             });
             this.lastUpdated.textContent = `Last updated: ${timeStr} NZST by ${updatedBy}`;
         } else {
