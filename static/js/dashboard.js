@@ -127,8 +127,17 @@ class AffinityDashboard {
     updateLastUpdatedTime(timestamp, updatedBy) {
         if (timestamp && updatedBy) {
             const date = new Date(timestamp);
-            const timeStr = date.toLocaleString();
-            this.lastUpdated.textContent = `Last updated: ${timeStr} by ${updatedBy}`;
+            // Convert to NZST timezone
+            const timeStr = date.toLocaleString('en-NZ', {
+                timeZone: 'Pacific/Auckland',
+                year: 'numeric',
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            this.lastUpdated.textContent = `Last updated: ${timeStr} NZST by ${updatedBy}`;
         } else {
             this.lastUpdated.textContent = 'Last updated: No data available';
         }
